@@ -4,7 +4,7 @@ export interface IProducto {
     nombre: string;
     descripcion: string;
     precio: number;
-    categorias: string;
+    categoria: string;
     stock: number;
 }
 
@@ -13,7 +13,7 @@ export interface IProductoCreate {
     nombre: string;
     descripcion: string;
     precio: number;
-    categorias: string;
+    categoria: string;
     stock: number;
 }   
 

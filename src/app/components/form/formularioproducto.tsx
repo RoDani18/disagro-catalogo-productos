@@ -11,7 +11,7 @@ export const FormularioProducto = () => {
     nombre: "",
     descripcion: "",
     precio: 0,
-    categorias: "",
+    categoria: "",
     stock: 0,
   });
 
@@ -44,8 +44,8 @@ export const FormularioProducto = () => {
          alert ("El precio debe de ser un valor positivo")
          return;
       }
-      if(producto.categorias.trim()===""){
-         alert ("Debe ingresar categorias para continuar")
+      if(producto.categoria.trim()===""){
+         alert ("Debe ingresar una categoria para continuar")
          return;
       }
       if(producto.stock < 0){
@@ -89,7 +89,7 @@ export const FormularioProducto = () => {
         </div>
         <div className="form-group">
           <label>Categoría: </label>
-          <input name="categorias" placeholder="EJ: Fertilizantes" onChange={manejarCambio} required />
+          <input name="categoria" placeholder="EJ: Fertilizantes" onChange={manejarCambio} required />
         </div>
         <div className="form-group">
           <label>Stock: </label>

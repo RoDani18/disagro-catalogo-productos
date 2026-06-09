@@ -1,0 +1,87 @@
+body{
+    background-color: #14e60d;
+    font-family: Arial, sans-serif;
+}
+.logo{
+    margin-bottom: 20px;
+}
+.listado-container {
+    width: 900px;
+    margin: 20px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+.listado-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.listado-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.listado-table th, .listado-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.listado-table th {
+    background-color: #f2f2f2;
+}
+.btn-volver {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #1f7a3f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-volver:hover {
+    background-color: #09632c;
+}
+.btn-crear {
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-crear:hover {
+    background-color: #0056b3;
+}
+
+.btn-eliminar {
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-eliminar:hover {
+    background-color: #c82333;
+}
+.listado-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn-editar {
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.btn-editar:hover {
+    background-color: #218838;
+}
