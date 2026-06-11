@@ -1,0 +1,74 @@
+.alerta-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.alerta-card {
+  background: white;
+  width: 360px;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  animation: aparecer 0.2s ease-in-out;
+}
+
+.alerta-logo {
+  width: 130px;
+  margin-bottom: 10px;
+}
+
+.alerta-card h3 {
+  margin-bottom: 10px;
+}
+
+.alerta-card p {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.alerta-card.exito h3 {
+  color: #1f7a3f;
+}
+
+.alerta-card.error h3 {
+  color: #b00020;
+}
+
+.alerta-card.info h3 {
+  color: #0056b3;
+}
+
+.alerta-boton {
+  background-color: #1f7a3f;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.alerta-boton:hover {
+  background-color: #09632c;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

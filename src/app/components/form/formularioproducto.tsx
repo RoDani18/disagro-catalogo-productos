@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { IProductoCreate } from "../../../interfaces/producto";
 import { ProductoService } from "../../../services/productoServices";
+import { Alerta } from "../Alerta";
 import "./formulario.css";
 /**Formulario sobre productos */
 export const FormularioProducto = () => {
   const productoService = new ProductoService();
+  const [mensajeAlerta, setMensajeAlerta] = useState("");
+const [tipoAlerta, setTipoAlerta] = useState<"exito" | "error" | "info">("info");
 
   const [producto, setProducto] = useState<IProductoCreate>({
     codigo: "",
@@ -14,6 +17,16 @@ export const FormularioProducto = () => {
     categoria: "",
     stock: 0,
   });
+  const limpiarFormulario = () => {
+  setProducto({
+    codigo: "",
+    nombre: "",
+    descripcion: "",
+    precio: 0,
+    categoria: "",
+    stock: 0,
+  });
+};
 
   const manejarCambio = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,12 +67,15 @@ export const FormularioProducto = () => {
       }
         if (window.confirm("¿Deseas crear el producto?")) {
           await productoService.createProducto(producto);
-        alert("Producto creado correctamente");
+        setTipoAlerta("exito");
+        setMensajeAlerta("Producto creado correctamente");
       }
     } catch (error) {
       console.error("Error al crear producto:", error);
-      alert("Error al crear producto");
+      setTipoAlerta("error");
+        setMensajeAlerta("Error al crear");
     }
+    
   };
 
   return (
@@ -70,37 +86,111 @@ export const FormularioProducto = () => {
         <h1>Bienvenido al Sistema de Gestión de Productos de Disagro</h1>
         <h5>Por favor, complete el siguiente formulario para agregar un nuevo producto al catálogo:</h5>
 
-      <form onSubmit={crearProducto}>
-        <div className="form-group">
-          <label>Código: </label>
-          <input name="codigo" placeholder="EJ: FER-001" onChange={manejarCambio} required />
-        </div>
-        <div className="form-group">
-          <label>Nombre: </label>
-          <input name="nombre" placeholder="EJ: Fertilizante" onChange={manejarCambio} required />
-        </div>
-        <div className="form-group">
-          <label>Descripción: </label>
-          <input name="descripcion" placeholder="EJ: Fertilizante orgánico para cultivos" onChange={manejarCambio} required />
-        </div>
-        <div className="form-group">
-          <label>Precio: </label    >
-          <input name="precio" type="number" placeholder="EJ: 10000" onChange={manejarCambio} required min="1" />
-        </div>
-        <div className="form-group">
-          <label>Categoría: </label>
-          <input name="categoria" placeholder="EJ: Fertilizantes" onChange={manejarCambio} required />
-        </div>
-        <div className="form-group">
-          <label>Stock: </label>
-          <input name="stock" type="number" placeholder="EJ: 100" onChange={manejarCambio} required min="0" />
-        </div>
+      <form onSubmit={crearProducto} className="formulario-producto">
 
-        <button type="submit">Registrar Producto</button>
-        <button type="reset" className="btn limpiar">Limpiar Formulario</button>
-        <button type="button" className="btn listado" onClick={() => window.location.href = "/listado" }>Ver Productos</button>
-        <button type="button" className="btn inicio" onClick={() => window.location.href = "/"}>Inicio</button>
-      </form>
+  <div className="fila-formulario">
+    <label>Código:</label>
+    <input
+      name="codigo"
+      placeholder="EJ: FER-001"
+      value={producto.codigo}
+      onChange={manejarCambio}
+      required
+    />
+  </div>
+
+  <div className="fila-formulario">
+    <label>Nombre:</label>
+    <input
+      name="nombre"
+      placeholder="EJ: Fertilizante"
+      value={producto.nombre}
+      onChange={manejarCambio}
+      required
+    />
+  </div>
+
+  <div className="fila-formulario">
+    <label>Descripción:</label>
+    <input
+      name="descripcion"
+      placeholder="EJ: Fertilizante orgánico para cultivos"
+      value={producto.descripcion}
+      onChange={manejarCambio}
+      required
+    />
+  </div>
+
+  <div className="fila-formulario">
+    <label>Precio:</label>
+    <input
+      name="precio"
+      type="number"
+      placeholder="EJ: 10000"
+      value={producto.precio === 0 ? "" : producto.precio}
+      onChange={manejarCambio}
+      required
+      min="1"
+    />
+  </div>
+
+  <div className="fila-formulario">
+    <label>Categoría:</label>
+    <input
+      name="categoria"
+      placeholder="EJ: Fertilizantes"
+      value={producto.categoria}
+      onChange={manejarCambio}
+      required
+    />
+  </div>
+
+  <div className="fila-formulario">
+    <label>Stock:</label>
+    <input
+      name="stock"
+      type="number"
+      placeholder="EJ: 100"
+      value={producto.stock === 0 ? "" : producto.stock}
+      onChange={manejarCambio}
+      required
+      min="0"
+    />
+  </div>
+
+  <div className="botones-formulario">
+
+    <button type="submit">
+      Registrar Producto
+    </button>
+
+    <button
+      type="button"
+      className="btn limpiar"
+      onClick={limpiarFormulario}
+    >
+      Limpiar Formulario
+    </button>
+
+    <button
+      type="button"
+      onClick={() => (window.location.href = "/productos")}
+      className="btn-listado"
+    >
+      Ver Productos
+    </button>
+
+    <button
+      type="button"
+      className="btn inicio"
+      onClick={() => (window.location.href = "/")}
+    >
+      Inicio
+    </button>
+
+  </div>
+
+</form>
       </center>
     </div>
 

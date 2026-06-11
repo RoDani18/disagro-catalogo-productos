@@ -1,78 +1,133 @@
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #2cbb09;
-}
-.logo{
-    margin-bottom: 20px;
-}
-.form-container {
-  width: 800px;
-  margin: 20px auto;
-  padding: 35px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  background: #14c900;
 }
 
-.form-container h2 {
-  text-align: center;
+/* Caja blanca principal */
+.form-container {
+  width: 85%;
+  max-width: 850px;
+  margin: 25px auto;
+  background: white;
+  padding: 35px 45px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo */
+.form-container .logo {
+  width: 170px;
   margin-bottom: 20px;
 }
 
-.form-group {
+/* Título */
+.form-container h1 {
+  color: #000;
+  font-size: 28px;
   margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Subtítulo */
+.form-container h5 {
+  color: #111;
+  font-size: 14px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Formulario */
+.formulario-producto {
+  width: 90%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Cada fila del formulario */
+.fila-formulario {
   display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 18px;
 }
 
-.form-group label {
-   width:100px;
-    font-weight:bold;
-     text-align: right;
-    margin-right: 15px;
-
+/* Etiquetas a la izquierda */
+.fila-formulario label {
+  width: 130px;
+  text-align: right;
+  margin-right: 15px;
+  font-weight: bold;
+  color: #000;
 }
 
-.form-group input {
- flex:1;
-  padding: 5px;
-  width: 80%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-button {
-  width: 20%;
+/* Inputs */
+.fila-formulario input {
+  flex: 1;
   padding: 10px;
-  background-color: #1f7a3f;
-  color: white;
-  border: 1px solid #101110;
+  border: 1px solid #bbb;
   border-radius: 6px;
-  cursor: pointer;
+  font-size: 14px;
 }
 
-button:hover {
+.fila-formulario input:focus {
+  outline: none;
+  border-color: #1f7a3f;
+  box-shadow: 0 0 5px rgba(31, 122, 63, 0.3);
+}
+
+/* Contenedor de botones */
+.botones-formulario {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+/* Botones generales */
+.botones-formulario button {
+  width: 145px;
+  padding: 11px;
+  border-radius: 7px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* Registrar producto */
+.botones-formulario button[type="submit"] {
+  background-color: #1f7a3f;
+}
+
+.botones-formulario button[type="submit"]:hover {
   background-color: #09632c;
 }
-.btn.listado {
-  background-color: #007bff;
-  margin-left: 10px;
-}
-.btn.listado:hover {
-  background-color: #0056b3;
-}
-.btn.inicio {
-  background-color: #b14c09;
-  margin-left: 10px;
-}
-.btn.inicio:hover {
-  background-color: #8a3b07;
-}
+
+/* Limpiar formulario */
 .btn.limpiar {
-  background-color: #a50101;
-  margin-left: 10px;
+  background-color: #b00000;
 }
+
 .btn.limpiar:hover {
   background-color: #8b0000;
+}
+
+/* Ver productos */
+.btn-listado {
+  background-color: #0d6efd;
+}
+
+.btn-listado:hover {
+  background-color: #084298;
+}
+
+/* Inicio */
+.btn.inicio {
+  background-color: #b14c09;
+}
+
+.btn.inicio:hover {
+  background-color: #8a3b07;
 }

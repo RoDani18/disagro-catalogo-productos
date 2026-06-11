@@ -60,3 +60,19 @@ export const actualizarProducto = (req: Request, res: Response) => {
       res.status(500).json({ error: "Error al actualizar el producto" });
     }); 
 };
+
+export const obtenerProducto = (req: Request, res: Response) => {
+    const { id } = req.params;  
+    db.query("SELECT * FROM productos WHERE id = $1", [id])
+    .then((result) => {
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+        }   
+        res.json(result.rows[0]);
+    }
+    ) 
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Error al obtener el producto" });
+    }); 
+};

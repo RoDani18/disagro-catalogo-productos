@@ -1,11 +1,26 @@
 import { Router } from "express";
-import { db } from "../config/database";
-import { getListarProductos,crearProducto, actualizarProducto, eliminarProducto } from "../controllers/productocontroller";
-import { loginUsuario } from "../controllers/loginusuario";
+import { loginUsuario } from "../controllers/logincontroller";
+import {
+  crearProducto,
+    eliminarProducto,
+    getListarProductos as listarProductos,
+    obtenerProducto,
+    actualizarProducto as modificarProducto
+} from "../controllers/productocontroller";
 
-export const router = Router();
-router.get("/listado", getListarProductos);
-router.post("/crear", crearProducto);
-router.delete("/eliminar/:id", eliminarProducto);
-router.put("/modificar/:id", actualizarProducto);
+import { verificarToken, soloAdmin } from "../middlewares/authMiddleware";
+
+const router = Router();
+
 router.post("/login", loginUsuario);
+
+
+router.get("/listado", verificarToken, listarProductos);
+router.get("/producto/:id", verificarToken, obtenerProducto);
+
+
+router.post("/crear", verificarToken, soloAdmin, crearProducto);
+router.put("/modificar/:id", verificarToken, soloAdmin, modificarProducto);
+router.delete("/eliminar/:id", verificarToken, soloAdmin, eliminarProducto);
+
+export default router;
