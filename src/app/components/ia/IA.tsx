@@ -74,18 +74,23 @@ export const IA = () => {
         return;
       }
 
-      const productoEncontrado = productos.find((producto) =>
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-      );
+      const productosEncontrados = productos.filter((producto) =>
+  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+);
 
-      if (!productoEncontrado) {
-        setRespuesta("No se encontró un producto con ese nombre.");
-        return;
-      }
+if (productosEncontrados.length === 0) {
+  setRespuesta("No se encontraron productos con ese nombre.");
+  return;
+}
 
-      setRespuesta(
-        `El código del producto "${productoEncontrado.nombre}" es: ${productoEncontrado.codigo}`
-      );
+const mensaje = productosEncontrados
+  .map(
+    (producto) =>
+      `- ${producto.nombre} | Código: ${producto.codigo} | Stock: ${producto.stock}`
+  )
+  .join("\n");
+
+setRespuesta(`Productos encontrados:\n\n${mensaje}`);
       return;
     }
 
@@ -97,20 +102,25 @@ export const IA = () => {
         return;
       }
 
-      const productoEncontrado = productos.find(
-        (producto) =>
-          producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-          producto.codigo.toLowerCase().includes(busqueda.toLowerCase())
-      );
+      const productosEncontrados = productos.filter(
+  (producto) =>
+    producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+    producto.codigo.toLowerCase().includes(busqueda.toLowerCase())
+);
 
-      if (!productoEncontrado) {
-        setRespuesta("No se encontró un producto con ese código o nombre.");
-        return;
-      }
+if (productosEncontrados.length === 0) {
+  setRespuesta("No se encontraron productos con ese código o nombre.");
+  return;
+}
 
-      setRespuesta(
-        `El precio del producto "${productoEncontrado.nombre}" es: Q ${productoEncontrado.precio}`
-      );
+const mensaje = productosEncontrados
+  .map(
+    (producto) =>
+      `- ${producto.nombre} | Código: ${producto.codigo} | Precio: Q ${producto.precio}`
+  )
+  .join("\n");
+
+setRespuesta(`Productos encontrados:\n\n${mensaje}`);
       return;
     }
   };

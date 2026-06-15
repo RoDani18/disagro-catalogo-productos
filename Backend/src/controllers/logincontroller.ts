@@ -32,6 +32,12 @@ export const loginUsuario = async (req: Request, res: Response) => {
     }
 
     const usuario = resultado.rows[0];
+    const Rolespermitidos = ["Admin", "usuario"];
+    if(!Rolespermitidos.includes(usuario.rol)){
+      return res.status(403).json({
+        mensaje: "Rol no existente en el sistema",
+      });
+    }
 
     const token = jwt.sign(
       {

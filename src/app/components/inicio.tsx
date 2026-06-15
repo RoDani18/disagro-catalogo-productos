@@ -55,7 +55,7 @@ export const Inicio = () => {
 
   <button onClick={() => navigate("/ia")} className="opcion-card">
     <span>🤖</span>
-    <strong>Asistente IA</strong>
+    <strong>Asistente Virtual</strong>
     <small>Consulta recomendaciones básicas</small>
   </button>
 </div>
