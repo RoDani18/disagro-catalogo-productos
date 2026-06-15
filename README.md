@@ -79,8 +79,6 @@ disagro-catalogo-productos/
 │   │   └── services/
 │   └── package.json
 │
-├── database.sql
-├── .env.example
 └── README.md
 ```
 
@@ -105,20 +103,6 @@ Instalar dependencias:
 
 ```bash
 npm install
-```
-
-Crear un archivo `.env` tomando como referencia el archivo `.env.example`.
-
-Ejemplo:
-
-```env
-PORT=3001
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=tu_password
-DB_NAME=disagro_catalogo
-JWT_SECRET=disagro_2026
 ```
 
 Ejecutar el backend:
