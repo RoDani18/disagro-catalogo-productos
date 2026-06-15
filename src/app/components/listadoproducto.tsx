@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { IProducto } from "../../interfaces/producto";
 import { ProductoService } from "../../services/productoServices";
 import { Alerta } from "./Alerta";
+import { Confirmacion } from "./confirmacion";
 import "./listadoproducto.css";
 
 /** Listado de productos */
@@ -15,10 +16,13 @@ export const ListadoProducto = () => {
   const [productos, setProductos] = useState<IProducto[]>([]);
   const [busqueda, setBusqueda] = useState("");
 
+  const [productoEliminar, setProductoEliminar] = useState<IProducto | null>(null);
+
+  const [editandoId, setEditandoId] = useState<number | null>(null);
+  const [productoEditado, setProductoEditado] = useState<IProducto | null>(null);
+
   const [mensajeAlerta, setMensajeAlerta] = useState("");
-  const [tipoAlerta, setTipoAlerta] = useState<"exito" | "error" | "info">(
-    "info"
-  );
+  const [tipoAlerta, setTipoAlerta] = useState<"exito" | "error" | "info">("info");
 
   const mostrarAlerta = (
     tipo: "exito" | "error" | "info",
@@ -42,68 +46,92 @@ export const ListadoProducto = () => {
     cargarProductos();
   }, []);
 
-  const eliminarProducto = async (id: number) => {
-    const confirmar = window.confirm("¿Deseas eliminar este producto?");
+  const pedirEliminarProducto = (producto: IProducto) => {
+    setProductoEliminar(producto);
+  };
 
-    if (!confirmar) {
-      return;
-    }
+  const confirmarEliminarProducto = async () => {
+    if (!productoEliminar) return;
 
     try {
-      await productoService.deleteProducto(id);
+      await productoService.deleteProducto(productoEliminar.id);
 
+      setProductoEliminar(null);
       mostrarAlerta("exito", "Producto eliminado correctamente");
-
       cargarProductos();
     } catch (error) {
       console.error("Error al eliminar producto:", error);
 
+      setProductoEliminar(null);
       mostrarAlerta("error", "Error al eliminar producto");
     }
   };
 
-  const editarProducto = async (producto: IProducto) => {
-    const nuevoNombre = window.prompt("Nuevo nombre:", producto.nombre);
-    if (nuevoNombre === null) return;
+  const iniciarEdicion = (producto: IProducto) => {
+    setEditandoId(producto.id);
+    setProductoEditado({ ...producto });
+  };
 
-    const nuevaDescripcion = window.prompt(
-      "Nueva descripción:",
-      producto.descripcion
-    );
-    if (nuevaDescripcion === null) return;
+  const cancelarEdicion = () => {
+    setEditandoId(null);
+    setProductoEditado(null);
+  };
 
-    const nuevoPrecio = window.prompt("Nuevo precio:", String(producto.precio));
-    if (nuevoPrecio === null) return;
+  const manejarCambioEdicion = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!productoEditado) return;
 
-    const nuevaCategoria = window.prompt(
-      "Nueva categoría:",
-      producto.categoria
-    );
-    if (nuevaCategoria === null) return;
+    const { name, value } = e.target;
 
-    const nuevoStock = window.prompt("Nuevo stock:", String(producto.stock));
-    if (nuevoStock === null) return;
+    setProductoEditado({
+      ...productoEditado,
+      [name]: name === "precio" || name === "stock" ? Number(value) : value,
+    });
+  };
 
-    const productoActualizado = {
-      ...producto,
-      nombre: nuevoNombre,
-      descripcion: nuevaDescripcion,
-      precio: Number(nuevoPrecio),
-      categoria: nuevaCategoria,
-      stock: Number(nuevoStock),
-    };
+  const guardarEdicion = async () => {
+    if (!productoEditado) return;
+
+    if (productoEditado.codigo.trim() === "") {
+      mostrarAlerta("error", "El código no puede estar vacío");
+      return;
+    }
+
+    if (productoEditado.nombre.trim() === "") {
+      mostrarAlerta("error", "El nombre no puede estar vacío");
+      return;
+    }
+
+    if (productoEditado.descripcion.trim() === "") {
+      mostrarAlerta("error", "La descripción no puede estar vacía");
+      return;
+    }
+
+    if (productoEditado.precio <= 0) {
+      mostrarAlerta("error", "El precio debe ser mayor a 0");
+      return;
+    }
+
+    if (productoEditado.categoria.trim() === "") {
+      mostrarAlerta("error", "La categoría no puede estar vacía");
+      return;
+    }
+
+    if (productoEditado.stock < 0) {
+      mostrarAlerta("error", "El stock no puede ser negativo");
+      return;
+    }
 
     try {
-      await productoService.updateProducto(producto.id, productoActualizado);
+      await productoService.updateProducto(productoEditado.id, productoEditado);
 
       mostrarAlerta("exito", "Producto actualizado correctamente");
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1200);
+      setEditandoId(null);
+      setProductoEditado(null);
+
+      cargarProductos();
     } catch (error) {
       console.error("Error al actualizar producto:", error);
-
       mostrarAlerta("error", "Error al actualizar producto");
     }
   };
@@ -148,29 +176,122 @@ export const ListadoProducto = () => {
             {productosFiltrados.length > 0 ? (
               productosFiltrados.map((producto) => (
                 <tr key={producto.id}>
-                  <td>{producto.codigo}</td>
-                  <td>{producto.nombre}</td>
-                  <td>{producto.descripcion}</td>
-                  <td>Q {producto.precio}</td>
-                  <td>{producto.categoria}</td>
-                  <td>{producto.stock}</td>
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="codigo"
+                        value={productoEditado?.codigo || ""}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      producto.codigo
+                    )}
+                  </td>
+
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="nombre"
+                        value={productoEditado?.nombre || ""}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      producto.nombre
+                    )}
+                  </td>
+
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="descripcion"
+                        value={productoEditado?.descripcion || ""}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      producto.descripcion
+                    )}
+                  </td>
+
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="precio"
+                        type="number"
+                        value={productoEditado?.precio || 0}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      `Q ${producto.precio}`
+                    )}
+                  </td>
+
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="categoria"
+                        value={productoEditado?.categoria || ""}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      producto.categoria
+                    )}
+                  </td>
+
+                  <td>
+                    {editandoId === producto.id ? (
+                      <input
+                        name="stock"
+                        type="number"
+                        value={productoEditado?.stock || 0}
+                        onChange={manejarCambioEdicion}
+                        className="input-editar"
+                      />
+                    ) : (
+                      producto.stock
+                    )}
+                  </td>
 
                   {esAdmin && (
                     <td className="td-acciones">
                       <div className="acciones-botones">
-                        <button
-                          onClick={() => editarProducto(producto)}
-                          className="btn-editar"
-                        >
-                          Modificar
-                        </button>
+                        {editandoId === producto.id ? (
+                          <>
+                            <button
+                              onClick={guardarEdicion}
+                              className="btn-editar"
+                            >
+                              Guardar
+                            </button>
 
-                        <button
-                          onClick={() => eliminarProducto(producto.id)}
-                          className="btn-eliminar"
-                        >
-                          Eliminar
-                        </button>
+                            <button
+                              onClick={cancelarEdicion}
+                              className="btn-eliminar"
+                            >
+                              Cancelar
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => iniciarEdicion(producto)}
+                              className="btn-editar"
+                            >
+                              Modificar
+                            </button>
+
+                            <button
+                              onClick={() => pedirEliminarProducto(producto)}
+                              className="btn-eliminar"
+                            >
+                              Eliminar
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   )}
@@ -208,6 +329,14 @@ export const ListadoProducto = () => {
           mensaje={mensajeAlerta}
           tipo={tipoAlerta}
           cerrar={() => setMensajeAlerta("")}
+        />
+      )}
+
+      {productoEliminar && (
+        <Confirmacion
+          mensaje={`¿Deseas eliminar el producto "${productoEliminar.nombre}"?`}
+          confirmar={confirmarEliminarProducto}
+          cancelar={() => setProductoEliminar(null)}
         />
       )}
     </div>

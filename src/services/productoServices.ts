@@ -7,6 +7,7 @@ export class ProductoService {
         private apicrear = "/crear";
         private apimodificar = "/modificar";
         private apieliminar = "/eliminar";
+  static crearProducto: any;
     
     public async getProductos(): Promise<IProducto[]> {
         try {

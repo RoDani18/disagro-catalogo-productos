@@ -150,3 +150,17 @@ body{
 .btn-eliminar:hover {
   background-color: #b02a37;
 }
+.input-editar {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.input-editar {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
