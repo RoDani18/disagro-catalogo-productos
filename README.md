@@ -1,46 +1,291 @@
-# Getting Started with Create React App
+# Catálogo de Productos Disagro
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Proyecto desarrollado como prueba técnica para la gestión de productos.
+El sistema permite iniciar sesión, consultar productos, crear nuevos registros, modificar información, eliminar productos y utilizar un asistente básico para consultar datos del catálogo.
 
-## Available Scripts
+## Tecnologías utilizadas
 
-In the project directory, you can run:
+### Frontend
 
-### `npm start`
+* React
+* TypeScript
+* Axios
+* CSS
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Backend
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* Node.js
+* Express
+* TypeScript
+* JWT para autenticación
+* PostgreSQL como base de datos
 
-### `npm test`
+## Funcionalidades principales
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Inicio de sesión con correo y contraseña.
+* Generación de token JWT al iniciar sesión.
+* Protección de rutas mediante autenticación.
+* Manejo de roles:
 
-### `npm run build`
+  * **Admin:** puede ver, crear, modificar y eliminar productos.
+  * **Usuario:** puede ver productos y consultar información.
+* Listado de productos.
+* Búsqueda de productos por nombre.
+* Creación de productos.
+* Modificación de productos.
+* Eliminación de productos.
+* Consulta individual de producto por ID.
+* Asistente básico del catálogo para:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  * Consultar productos con stock bajo, stock bueno o sin stock.
+  * Buscar el código de un producto por nombre.
+  * Consultar el precio de un producto por código o nombre.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Credenciales de prueba
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Administrador
 
-### `npm run eject`
+```txt
+Correo: admin@gmail.com
+Contraseña: 1234
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Usuario
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```txt
+Correo: usuario@gmail.com
+Contraseña: 1234
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Estructura general del proyecto
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```txt
+disagro-catalogo-productos/
+│
+├── Backend/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middlewares/
+│   │   ├── routes/
+│   │   └── index.ts
+│   └── package.json
+│
+├── Frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── config/
+│   │   ├── interfaces/
+│   │   └── services/
+│   └── package.json
+│
+├── database.sql
+├── .env.example
+└── README.md
+```
 
-## Learn More
+## Instalación y ejecución
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Clonar el repositorio
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git clone URL_DEL_REPOSITORIO
+cd disagro-catalogo-productos
+```
+
+## Configuración del Backend
+
+Entrar a la carpeta del backend:
+
+```bash
+cd Backend
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Crear un archivo `.env` tomando como referencia el archivo `.env.example`.
+
+Ejemplo:
+
+```env
+PORT=3001
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=tu_password
+DB_NAME=disagro_catalogo
+JWT_SECRET=disagro_2026
+```
+
+Ejecutar el backend:
+
+```bash
+npx ts-node-dev src/index.ts
+```
+
+El servidor se ejecuta en:
+
+```txt
+http://localhost:3001
+```
+
+## Configuración del Frontend
+
+Entrar a la carpeta del frontend:
+
+```bash
+cd Frontend
+```
+
+Instalar dependencias:
+
+```bash
+npm install
+```
+
+Ejecutar el frontend:
+
+```bash
+npm start
+```
+
+El frontend se ejecuta en:
+
+```txt
+http://localhost:3000
+```
+
+## Base de datos
+
+El proyecto utiliza PostgreSQL.
+
+Se debe crear una base de datos llamada:
+
+```txt
+disagro_catalogo
+```
+
+Luego ejecutar el archivo:
+
+```txt
+database.sql
+```
+
+Este archivo contiene la creación de tablas necesarias para productos y usuarios, además de usuarios de prueba para iniciar sesión.
+
+## Endpoints principales
+
+### Autenticación
+
+```http
+POST /api/login
+```
+
+Permite iniciar sesión con correo y contraseña.
+Devuelve un token JWT y los datos del usuario autenticado.
+
+---
+
+### Listar productos
+
+```http
+GET /api/listado
+```
+
+Devuelve el listado completo de productos registrados.
+
+---
+
+### Obtener producto por ID
+
+```http
+GET /api/producto/:id
+```
+
+Devuelve la información de un producto específico.
+
+---
+
+### Crear producto
+
+```http
+POST /api/crear
+```
+
+Permite registrar un nuevo producto.
+Ruta protegida para usuarios con rol **Admin**.
+
+---
+
+### Modificar producto
+
+```http
+PUT /api/modificar/:id
+```
+
+Permite actualizar la información de un producto existente.
+Ruta protegida para usuarios con rol **Admin**.
+
+---
+
+### Eliminar producto
+
+```http
+DELETE /api/eliminar/:id
+```
+
+Permite eliminar un producto.
+Ruta protegida para usuarios con rol **Admin**.
+
+## Campos del producto
+
+Cada producto contiene los siguientes campos:
+
+```txt
+id
+codigo
+nombre
+descripcion
+precio
+categoria
+stock
+```
+
+## Criterio utilizado para el asistente de stock
+
+Para clasificar los productos por stock se utilizó una regla básica:
+
+```txt
+Sin stock: stock = 0
+Stock bajo: stock entre 1 y 10
+Stock bueno: stock mayor a 10
+```
+
+Esta regla puede ajustarse según las políticas reales de inventario de la empresa.
+
+## Seguridad
+
+El sistema utiliza JWT para proteger las rutas del backend.
+
+Cuando el usuario inicia sesión correctamente, el backend genera un token con la información principal del usuario:
+
+```txt
+id
+correo
+rol
+```
+
+El frontend guarda el token y lo envía en las peticiones protegidas.
+
+Las operaciones de crear, modificar y eliminar productos están restringidas únicamente para usuarios con rol **Admin**.
+
+## Notas del proyecto
+
+El sistema fue desarrollado como una aplicación CRUD para productos, agregando autenticación, autorización por roles y un asistente básico para consultas del catálogo.
+
+El objetivo principal es permitir la administración de productos de forma sencilla, organizada y segura.
+
