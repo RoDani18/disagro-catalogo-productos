@@ -12,21 +12,41 @@ export const getListarProductos = (req: Request, res: Response) => {
     }); 
 };
 
-export const crearProducto = (req: Request, res: Response) => {
-  const { codigo, nombre, descripcion, precio,categoria, stock } = req.body; 
-    db.query(   
-    "INSERT INTO productos (codigo, nombre, descripcion, precio, categoria, stock) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-    [codigo, nombre, descripcion, precio,categoria, stock]
-  ) 
-    .then((result) => {
-        return res.status(201).json(result.rows[0]);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: "Error al crear el producto" });
-    });
-};
+export const crearProducto = async (req: Request, res: Response) => {
+  const { codigo, nombre, descripcion, precio, categoria, stock } = req.body;
 
+  try {
+    if (!codigo || !nombre || !descripcion || !precio || !categoria || stock === undefined) {
+      return res.status(400).json({
+        mensaje: "Todos los campos son obligatorios",
+      });
+    }
+
+    const resultado = await db.query(
+      `INSERT INTO productos (codigo, nombre, descripcion, precio, categoria, stock)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [codigo, nombre, descripcion, precio, categoria, stock]
+    );
+
+    return res.status(201).json({
+      mensaje: "Producto creado correctamente",
+      producto: resultado.rows[0],
+    });
+  } catch (error: any) {
+    console.error("Error al crear producto:", error);
+
+    if (error.code === "23505") {
+      return res.status(400).json({
+        mensaje: "Ya existe un producto registrado con ese código",
+      });
+    }
+
+    return res.status(500).json({
+      mensaje: "Error al crear el producto",
+    });
+  }
+};
 export const eliminarProducto = (req: Request, res: Response) => {
   const { id } = req.params;
     db.query("DELETE FROM productos WHERE id = $1 RETURNING *", [id])

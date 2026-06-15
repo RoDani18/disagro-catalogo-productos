@@ -34,7 +34,7 @@ export const verificarToken = (
   try {
     const usuario = jwt.verify(token, SECRET_KEY) as UsuarioToken;
     req.usuario = usuario;
-    const rolesPermitidos = ["Admin", "Usuario"];
+    const rolesPermitidos = ["Admin", "usuario"];
 
 if (!rolesPermitidos.includes(usuario.rol)) {
   return res.status(403).json({
