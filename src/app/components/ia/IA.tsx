@@ -140,7 +140,7 @@ setRespuesta(`Productos encontrados:\n\n${mensaje}`);
           className="ia-logo"
         />
 
-        <h1>Asistente Inteligente del Catálogo</h1>
+        <h1>Asistente Virtual del Catálogo</h1>
 
         <p className="ia-descripcion">
           Selecciona una consulta para analizar la información de los productos
