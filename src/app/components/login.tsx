@@ -88,11 +88,6 @@ export const Login = () => {
         <div className="login-footer">
           <p>Prueba Disagro • 2026</p>
 
-          <div className="credenciales">
-            <p className="credenciales-titulo">Credenciales de prueba</p>
-            <p><strong>Admin:</strong> admin@gmail.com / 1234</p>
-            <p><strong>Usuario:</strong> usuario@gmail.com / 1234</p>
-          </div>
         </div>
       </div>
 
